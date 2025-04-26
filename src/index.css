@@ -1,0 +1,73 @@
+@import 'tailwindcss';
+
+.active {
+    @apply text-indigo-700;
+}
+
+.main-container {
+    @apply flex flex-row justify-center sm:p-10 md:p-20 bg-slate-100 font-sans;
+}
+
+.wrapper-container {
+    @apply basis-full min-h-screen sm:min-h-200 max-w-full lg:max-w-7xl bg-white shadow-2xl rounded-lg;
+}
+
+.nav-container {
+    @apply flex flex-row justify-between p-8 sm:p-15 bg-slate-200 sm:bg-white rounded-lg;
+}
+
+.nav-link {
+    @apply hover:text-indigo-500;
+}
+
+.main-outer-page-container {
+    @apply flex flex-row justify-items-start mx-14 sm:justify-center sm:mx-5;
+}
+
+.main-inner-page-container {
+    @apply lg:w-4xl min-h-100;
+}
+
+.input-field {
+    @apply min-w-50 sm:min-w-100 border-2 border-solid rounded-sm placeholder:text-gray-500 hover:opacity-70 focus:opacity-70 px-2;
+}
+
+.button-submit {
+    @apply min-w-25 border-2 border-solid border-black rounded-sm bg-blue-500 hover:bg-blue-600 hover:shadow-lg text-white cursor-pointer aria-disabled:bg-slate-400 aria-disabled:cursor-not-allowed;
+}
+
+.list-group {
+    @apply my-5;
+}
+
+.form-field-group {
+    @apply flex flex-row my-5;
+}
+
+.form-field-label-container {
+    @apply flex-none w-25;
+}
+
+.form-field-input-container {
+    @apply grow mx-2;
+}
+
+.page-sub-header {
+    @apply my-2;
+}
+
+.alert {
+    @apply py-1.5 px-3 rounded-lg;
+}
+
+.alert-danger, .alert-success {
+    @apply text-white;
+}
+
+.alert-success {
+    @apply bg-green-600;
+}
+
+.alert-danger {
+    @apply bg-red-600;
+}
