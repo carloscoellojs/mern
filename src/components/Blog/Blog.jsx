@@ -8,10 +8,6 @@ const Blog = () => {
   const member = useSelector(selectMember);
   const formattedName = common.firstCharToUpperCase(member?.name);
 
-  if (!common.isLoggedIn()) {
-    return null;
-  }
-
   return (
     <div className="blog-container my-5">
       <PageHeader>

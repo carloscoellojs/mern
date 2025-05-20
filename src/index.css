@@ -13,7 +13,7 @@
 }
 
 .nav-container {
-    @apply flex flex-row justify-between p-8 sm:p-15 bg-slate-200 sm:bg-white rounded-lg;
+    @apply flex flex-row justify-between p-8 sm:p-15 bg-slate-200 sm:bg-white rounded-lg text-xl
 }
 
 .nav-link {
@@ -71,3 +71,14 @@
 .alert-danger {
     @apply bg-red-600;
 }
+
+.loader {
+    @apply flex flex-row items-end;
+    .spinner {
+        @apply h-10 w-10 border-4 border-b-indigo-800 rounded-full border-gray-300 animate-spin;
+    }
+    .message {
+        @apply text-indigo-800 pl-4 pr-4;
+    }
+}
+

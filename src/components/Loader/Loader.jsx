@@ -1,5 +1,6 @@
-export const Loader = () => (
-  <div className="spinner-border text-primary" role="status">
-    hiiiiiiiiiiiiiii
+export const Loader = ({ message = '' }) => (
+  <div className="loader">
+    <div className="spinner"></div>
+    <div className="message">{message}</div>
   </div>
 );

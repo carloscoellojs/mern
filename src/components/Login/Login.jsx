@@ -7,8 +7,8 @@ import { Input } from "../Input/Input";
 import { Label } from "../Label/Label";
 // importing loginUserAction action for dispatching it on the component
 import {
-  cleanUpAction,
-  loginUserAction
+  loginUserAction,
+  resetLoginRegisterValues
 } from "../../actions/userActions";
 // using our alert message component for displaying messages
 import { AlertMessage } from "../Alert/AlertMessage";
@@ -34,7 +34,8 @@ const Login = () => {
     INITIAL_LOGIN_FORM_ERRORS_STATE
   );
   const [fetching, setFetching] = useState(false);
-  const { login, isAuthenticated } = useSelector(selectAll);
+  const [showAlertMessage, setShowAlertMessage] = useState(false);
+  const { login, isUserAuthenticated } = useSelector(selectAll);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -47,16 +48,28 @@ const Login = () => {
   }, []);
 
   useEffect(() => {
-    const { status } = login;
-    if(status === 200){
-      loginSuccessful()
+    if(fetching){
+      if(isUserAuthenticated){
+        loginSuccessful();
+      }
+      if(!isUserAuthenticated){
+        setFetching(false);
+        setShowAlertMessage(true);
+        setTimeout(() => {
+          setShowAlertMessage(false);
+        }, 2000)
+      }
     }
-  }, [isAuthenticated]);
+  }, [login.attempt]);
 
   const loginSuccessful = () => {
+    setFetching(false);
+    setShowAlertMessage(true);
     setTimeout(() => {
       setLoginForm(INITIAL_LOGIN_FORM_STATE);
       setLoginFormErrors(INITIAL_LOGIN_FORM_ERRORS_STATE);
+      setShowAlertMessage(false);
+      dispatch(resetLoginRegisterValues());
       navigate("/dashboard", { replace: true });
     }, 2000)
   };
@@ -89,19 +102,10 @@ const Login = () => {
   // this method submits the form input values to the redux action method fetchUser
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    console.log('submitting');
     const { email, password } = loginForm;
-    dispatch(loginUserAction(email, password));
     setFetching(true);
-    setTimeout(() => {
-      dispatch(cleanUpAction());
-      setFetching(false);
-    }, 2000);
+    dispatch(loginUserAction(email, password));
   };
-
-  // if(isAuthenticated){
-  //   return <p className="text-indigo-700">{'Authentication successful we are loading your dashboard page..........'}</p>
-  // }
 
   return (
     <div className="login-container">
@@ -110,7 +114,7 @@ const Login = () => {
           <h2>Login to your account</h2>
         </PageHeader>
       </div>
-      <AlertMessage success={login.success} message={login.message} showAlert={fetching} />
+      <AlertMessage success={login.success} message={login.message} showAlert={showAlertMessage} />
       <Form onSubmit={handleFormSubmit}>
         <div className="form-field-group">
           <div className="form-field-label-container">
@@ -152,12 +156,12 @@ const Login = () => {
                 loginForm,
                 loginFormErrors,
                 fetching
-              )}
+              ) || isUserAuthenticated }
               disabled={common.disableSubmitButton(
                 loginForm,
                 loginFormErrors,
                 fetching
-              )}>
+              ) || isUserAuthenticated }>
           {fetching ? "Authenticating..." : "Login"}
           </Button>
         </div>

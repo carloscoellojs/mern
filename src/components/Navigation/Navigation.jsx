@@ -5,7 +5,7 @@ import { selectAll } from "../../lib/selectors";
 
 // component for our main navigation
 const Navigation = () => {
-  const { isAuthenticated } = useSelector(selectAll);
+  const { isUserAuthenticated } = useSelector(selectAll);
   const dispatch = useDispatch();
 
   const AUTHENTICATED_NAV_LINKS = [
@@ -21,15 +21,14 @@ const Navigation = () => {
 
   const createNavLinks = (linkMapping) =>
     linkMapping.map((link) => (
-      <>
+      <div key={link[0]}>
         <NavLink
-        key={link[0]}
           className={'mx-4 hover:text-indigo-500'}
           {...link[1]}
         >
           {link[0]}
         </NavLink>
-      </>
+      </div>
     ));
 
 
@@ -38,12 +37,12 @@ const Navigation = () => {
       <div className="wrapper-container">
         <nav className="nav-container">
           {
-         !isAuthenticated ? <NavLink className="nav-link" to="/">
+         !isUserAuthenticated ? <NavLink className="nav-link" to="/">
             Home
           </NavLink>
           : <div></div>}
           <div className="flex flex-row">
-            {createNavLinks(isAuthenticated ? AUTHENTICATED_NAV_LINKS : UN_AUTHENTICATED_NAV_LINKS)}
+            {createNavLinks(isUserAuthenticated ? AUTHENTICATED_NAV_LINKS : UN_AUTHENTICATED_NAV_LINKS)}
           </div>
         </nav>
         <div className="main-outer-page-container ">

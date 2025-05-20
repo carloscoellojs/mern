@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchUserAction } from "../../actions/userActions";
 import common from "../../lib/common";
-import { Loader } from "../Loader/Loader";
 import { PageHeader } from "../PageHeader/PageHeader";
 import { selectMember } from "../../lib/selectors";
+import { Loader } from "../Loader/Loader";
 
 // component for representing our dashboard
 const Dashboard = () => {
@@ -13,12 +13,13 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const formattedName = common.firstCharToUpperCase(member?.name);
 
+
   useEffect(() => {
-    dispatch(fetchUserAction(localStorage.getItem("id")));
+    common.delayForDemo(2000).then(() => dispatch(fetchUserAction(localStorage.getItem("id"))));
   }, []);
 
-  if (!common.isLoggedIn()) {
-    return null;
+  if(!member.name){
+    return (<Loader message="Dashboard page is loading" />)
   }
 
   return (
@@ -42,7 +43,7 @@ const Dashboard = () => {
           </li>
         </ul>
         </div>
-        ): <Loader />}
+        ): null }
       </div>
   );
 };

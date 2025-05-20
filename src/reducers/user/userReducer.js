@@ -3,24 +3,29 @@ import { createSlice } from "@reduxjs/toolkit";
 export const userSlice = createSlice({
   name: "user",
   initialState: {
-    isAuthenticated: false,
-    login: {},
-    register: {},
+    isUserAuthenticated: false,
+    login: {
+      attempt: 0
+    },
+    register: {
+      attempt: 0
+    },
     member: {}
   },
   reducers: {
     loginUser: (state, action) => {
-      state.isAuthenticated = true;
-      state.login = action.payload;
+      state.isUserAuthenticated = true;
+      state.login = { ...action.payload, attempt: state.login.attempt + 1 };
     },
     loginUserError: (state, action) => {
-      state.login = action.payload;
+      state.isUserAuthenticated = false;
+      state.login = { ...action.payload, attempt: state.login.attempt + 1 };
     },
     registerUser: (state, action) => {
-      state.register = action.payload;
+      state.register = { ...action.payload, attempt: state.register.attempt + 1 };
     },
     registerUserError: (state, action) => {
-      state.register = action.payload;
+      state.register = { ...action.payload, attempt: state.register.attempt + 1 };
     },
     fetchUser: (state, action) => {
       state.member = action.payload;
@@ -33,14 +38,14 @@ export const userSlice = createSlice({
       };
     },
     logUserOut: (state) => {
-      state.isAuthenticated = false;
-      state.login = {};
-      state.register = {};
+      state.isUserAuthenticated = false;
+      state.login = { attempt: 0 };
+      state.register = { attempt: 0 };
       state.member = {};
     },
-    cleanUp: (state) => {
-      state.login = {};
-      state.register = {};
+    loginRegisterValuesReset: (state) => {
+      state.login = { attempt: 0 };
+      state.register = { attempt: 0 };
     }
   }
 });
@@ -53,7 +58,7 @@ export const {
   fetchUser,
   fetchUserError,
   logUserOut,
-  cleanUp
+  loginRegisterValuesReset
 } = userSlice.actions;
 
 export default userSlice.reducer;

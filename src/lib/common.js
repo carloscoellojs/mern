@@ -30,5 +30,6 @@ export default {
     const emptyFormErrorStateValues = Object.values(formErrorState).every(value => !value);
     return noEmptyFormStateValues && emptyFormErrorStateValues && !fetching ? false : true;
   },
-  firstCharToUpperCase: (str = '') => str.split(' ').map(el => el.charAt(0).toUpperCase() + el.slice(1,)).join(' ')
+  firstCharToUpperCase: (str = '') => str.split(' ').map(el => el.charAt(0).toUpperCase() + el.slice(1,)).join(' '),
+  delayForDemo: (time = 0) => new Promise(resolve => setTimeout(() => resolve(), time))
 };

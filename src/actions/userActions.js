@@ -6,7 +6,7 @@ import {
   fetchUser,
   fetchUserError,
   logUserOut,
-  cleanUp
+  loginRegisterValuesReset
 } from "../reducers/user/userReducer";
 
 import axios from "axios";
@@ -77,6 +77,6 @@ export const fetchUserAction = (id) => async (dispatch) => {
   }
 };
 
-export const cleanUpAction = () => dispatch => {
-    dispatch(cleanUp());
+export const resetLoginRegisterValues = () => dispatch => {
+    dispatch(loginRegisterValuesReset());
 };

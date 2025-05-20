@@ -9,7 +9,7 @@ import { AlertMessage } from "../Alert/AlertMessage";
 // connecting react with redux so they can communicate
 import { useSelector, useDispatch } from "react-redux";
 // using our registerUser method for dispatching action
-import { cleanUpAction, registerUserAction } from "../../actions/userActions";
+import { registerUserAction } from "../../actions/userActions";
 // using our common js object for accessing properties and methods
 import common from "../../lib/common";
 import {
@@ -34,6 +34,7 @@ const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [fetching, setFetching] = useState(false);
+  const [showAlertMessage, setShowAlertMessage] = useState(false);
 
   useEffect(() => {
     const isLoggedIn = common.isLoggedIn();
@@ -43,17 +44,28 @@ const Register = () => {
   }, []);
 
   useEffect(() => {
-    const { status } = register;
-    if (status === 201) {
-      registrationSuccess();
+    if(fetching){
+      if(register.success){
+        registrationSuccess();
+      }
+      if(!register.success){
+        setFetching(false);
+        setShowAlertMessage(true);
+        setTimeout(() => {
+          setShowAlertMessage(false);
+        }, 4000)
+      }
     }
-  }, [register.status]);
+  }, [register.attempt]);
 
   // updating state, redirecting
   const registrationSuccess = () => {
+    setFetching(false);
+    setShowAlertMessage(true);
     setTimeout(() => {
       setRegisterForm(INITIAL_REGISTER_FORM_STATE);
       setRegisterFormErrors(INITIAL_REGISTER_FORM_ERRORS_STATE);
+      setShowAlertMessage(false);
       navigate("/login");
     }, 2000)
   };
@@ -92,12 +104,8 @@ const Register = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const { name, email, password } = registerForm;
-    dispatch(registerUserAction(name, email, password));
     setFetching(true);
-    setTimeout(() => {
-      dispatch(cleanUpAction());
-      setFetching(false);
-    },2000)
+    dispatch(registerUserAction(name, email, password));
   };
 
   return (
@@ -107,7 +115,7 @@ const Register = () => {
           <h2>Create an account</h2>
         </PageHeader>
       </div>
-      <AlertMessage success={register.success} message={register.message} showAlert={fetching} />
+      <AlertMessage success={register.success} message={register.message} showAlert={showAlertMessage} />
       <Form className="needs-validation" onSubmit={handleFormSubmit}>
         <div className="form-field-group">
           <div className="form-field-label-container">
