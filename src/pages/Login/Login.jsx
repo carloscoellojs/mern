@@ -2,19 +2,19 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 // using our component for building inputs
-import { Input } from "../Input/Input";
+import { Input } from "../../components/Input/Input";
 // using our label component for building our labels
-import { Label } from "../Label/Label";
+import { Label } from "../../components/Label/Label";
 // importing loginUserAction action for dispatching it on the component
 import {
   loginUserAction,
   resetLoginRegisterValues
 } from "../../actions/userActions";
 // using our alert message component for displaying messages
-import { AlertMessage } from "../Alert/AlertMessage";
+import { AlertMessage } from "../../components/Alert/AlertMessage";
 // using our common js object for using properties methods
 import common from "../../lib/common";
-import { Form } from "../Form/Form";
+import { Form } from "../../components/Form/Form";
 import {
   INITIAL_LOGIN_FORM_ERRORS_STATE,
   INITIAL_LOGIN_FORM_STATE,
@@ -23,9 +23,9 @@ import {
   REGEX_VALID_EMAIL,
   REGEX_VALID_PASSWORD
 } from "../../lib/constants";
-import { PageHeader } from "../PageHeader/PageHeader";
+import { PageHeader } from "../../components/PageHeader/PageHeader";
 import { selectAll } from "../../lib/selectors";
-import { Button } from "../Button/Button";
+import { Button } from "../../components/Button/Button";
 
 // component representing login page
 const Login = () => {
@@ -55,21 +55,20 @@ const Login = () => {
       if(!isUserAuthenticated){
         setFetching(false);
         setShowAlertMessage(true);
-        setTimeout(() => {
-          setShowAlertMessage(false);
-        }, 2000)
       }
+       setTimeout(() => {
+          setShowAlertMessage(false);
+          dispatch(resetLoginRegisterValues());
+        }, 2000)
     }
   }, [login.attempt]);
 
   const loginSuccessful = () => {
     setFetching(false);
     setShowAlertMessage(true);
+    setLoginForm(INITIAL_LOGIN_FORM_STATE);
+    setLoginFormErrors(INITIAL_LOGIN_FORM_ERRORS_STATE);
     setTimeout(() => {
-      setLoginForm(INITIAL_LOGIN_FORM_STATE);
-      setLoginFormErrors(INITIAL_LOGIN_FORM_ERRORS_STATE);
-      setShowAlertMessage(false);
-      dispatch(resetLoginRegisterValues());
       navigate("/dashboard", { replace: true });
     }, 2000)
   };
@@ -108,64 +107,68 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="my-5">
-        <PageHeader>
-          <h2>Login to your account</h2>
-        </PageHeader>
+    <div className="min-h-screen flex items-start justify-center bg-white">
+      <div className="login-container w-full max-w-md">
+        <div className="my-5 text-center">
+          <PageHeader>
+            <h2 className="text-2xl">Login to your account</h2>
+          </PageHeader>
+        </div>
+        <AlertMessage success={login.success} message={login.message} showAlert={showAlertMessage} />
+        <Form onSubmit={handleFormSubmit}>
+          <div className="form-field-group-base">
+            <div className="form-field-label-container">
+              <Label name="email:" htmlFor="login-email" className="label-base" />
+            </div>
+            <div className="form-field-input-container">
+              <Input
+                type="email"
+                className="input-base"
+                name="email"
+                id="login-email"
+                value={loginForm.email}
+                errorMessage={loginFormErrors.emailError}
+                onChange={handleInputChange}
+                placeholder="type in your email"
+              />
+            </div>
+          </div>
+          <div className="form-field-group-base">
+            <div className="form-field-label-container">
+              <Label name="password:" htmlFor="login-password" className="label-base" />
+            </div>
+            <div className="form-field-input-container">
+              <Input
+                type="password"
+                className="input-base"
+                name="password"
+                id="login-password"
+                value={loginForm.password}
+                errorMessage={loginFormErrors.passwordError}
+                onChange={handleInputChange}
+                placeholder="type in your password"
+              />
+            </div>
+          </div>
+          <div className="mt-6">
+            <Button 
+                type='submit'
+                className={`btn-base ${fetching ? 'btn-indigo text-[color:var(--color-charcoal)]' : 'btn-dark'}`}
+                aria-disabled={common.disableSubmitButton(
+                  loginForm,
+                  loginFormErrors,
+                  fetching
+                ) || isUserAuthenticated }
+                disabled={common.disableSubmitButton(
+                  loginForm,
+                  loginFormErrors,
+                  fetching
+                ) || isUserAuthenticated }>
+            {fetching ? "Authenticating..." : "Login"}
+            </Button>
+          </div>
+        </Form>
       </div>
-      <AlertMessage success={login.success} message={login.message} showAlert={showAlertMessage} />
-      <Form onSubmit={handleFormSubmit}>
-        <div className="form-field-group">
-          <div className="form-field-label-container">
-            <Label name="email:" />
-          </div>
-          <div className="form-field-input-container">
-            <Input
-              type="email"
-              className="input-field"
-              name="email"
-              value={loginForm.email}
-              errorMessage={loginFormErrors.emailError}
-              onChange={handleInputChange}
-              placeholder="type in your email"
-            />
-          </div>
-        </div>
-        <div className="form-field-group">
-          <div className="form-field-label-container">
-            <Label name="password:" />
-          </div>
-          <div className="form-field-input-container">
-            <Input
-              type="password"
-              className="input-field"
-              name="password"
-              value={loginForm.password}
-              errorMessage={loginFormErrors.passwordError}
-              onChange={handleInputChange}
-              placeholder="type in your password"
-            />
-          </div>
-        </div>
-        <div className="flex flex-row">
-          <Button 
-              type='submit'
-              className="button-submit"
-              aria-disabled={common.disableSubmitButton(
-                loginForm,
-                loginFormErrors,
-                fetching
-              ) || isUserAuthenticated }
-              disabled={common.disableSubmitButton(
-                loginForm,
-                loginFormErrors,
-                fetching
-              ) || isUserAuthenticated }>
-          {fetching ? "Authenticating..." : "Login"}
-          </Button>
-        </div>
-      </Form>
     </div>
   );
 };

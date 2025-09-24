@@ -1,6 +1,6 @@
 import axios from "axios";
 
-// common properties methods that can be used across the app
+// common methods that can be used across the app
 export default {
   serverUrl: "http://localhost:2000",
   addUser: "/user/add",

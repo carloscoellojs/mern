@@ -1,84 +1,31 @@
 @import 'tailwindcss';
 
-.active {
-    @apply text-indigo-700;
+@theme {
+  --color-charcoal: #243B4A;
+  --color-charcoal-light: #2D4654;
+  --color-dgray: #4E4D5C;
+  --color-tindigo: #9381FF;
+  --color-wheat: #EFD6AC;
 }
 
-.main-container {
-    @apply flex flex-row justify-center sm:p-10 md:p-20 bg-slate-100 font-sans;
+.form-field-group-base {
+  @apply mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200 flex flex-col gap-1;
 }
-
-.wrapper-container {
-    @apply basis-full min-h-screen sm:min-h-200 max-w-full lg:max-w-7xl bg-white shadow-2xl rounded-lg;
+.input-base {
+  @apply w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-gray-200 text-gray-900 bg-white placeholder-gray-400;
 }
-
-.nav-container {
-    @apply flex flex-row justify-between p-8 sm:p-15 bg-slate-200 sm:bg-white rounded-lg text-xl
+.label-base {
+  @apply block text-sm font-medium text-gray-700 mb-1;
 }
-
-.nav-link {
-    @apply hover:text-indigo-500;
+.btn-base {
+  @apply w-full py-2 px-4 font-medium rounded cursor-pointer transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-gray-200 disabled:opacity-60 disabled:cursor-not-allowed;
 }
-
-.main-outer-page-container {
-    @apply flex flex-row justify-items-start mx-14 sm:justify-center sm:mx-5;
+.btn-dark {
+  @apply bg-gray-900 text-white hover:bg-gray-700;
 }
-
-.main-inner-page-container {
-    @apply lg:w-4xl min-h-100;
+.btn-indigo {
+  @apply bg-indigo-700 text-white;
 }
-
-.input-field {
-    @apply min-w-50 sm:min-w-100 border-2 border-solid rounded-sm placeholder:text-gray-500 hover:opacity-70 focus:opacity-70 px-2;
+.btn-loading {
+  @apply bg-indigo-700 text-[color:var(--color-charcoal)];
 }
-
-.button-submit {
-    @apply min-w-25 border-2 border-solid border-black rounded-sm bg-blue-500 hover:bg-blue-600 hover:shadow-lg text-white cursor-pointer aria-disabled:bg-slate-400 aria-disabled:cursor-not-allowed;
-}
-
-.list-group {
-    @apply my-5;
-}
-
-.form-field-group {
-    @apply flex flex-row my-5;
-}
-
-.form-field-label-container {
-    @apply flex-none w-25;
-}
-
-.form-field-input-container {
-    @apply grow mx-2;
-}
-
-.page-sub-header {
-    @apply my-2;
-}
-
-.alert {
-    @apply py-1.5 px-3 rounded-lg;
-}
-
-.alert-danger, .alert-success {
-    @apply text-white;
-}
-
-.alert-success {
-    @apply bg-green-600;
-}
-
-.alert-danger {
-    @apply bg-red-600;
-}
-
-.loader {
-    @apply flex flex-row items-end;
-    .spinner {
-        @apply h-10 w-10 border-4 border-b-indigo-800 rounded-full border-gray-300 animate-spin;
-    }
-    .message {
-        @apply text-indigo-800 pl-4 pr-4;
-    }
-}
-

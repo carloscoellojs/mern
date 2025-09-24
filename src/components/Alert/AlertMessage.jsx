@@ -1,12 +1,12 @@
 export const AlertMessage = ({ success, message, showAlert }) => {
-  const CLASS_NAMES = success === undefined ? 'alert' : success === false ? 'alert alert-danger' : 'alert alert-success';
-  
-  if(!showAlert){
-    return null;
-  }
+  if (!showAlert) return null;
+
+  let colorClass = '';
+  if (success === true) colorClass = 'text-indigo-500';
+  else if (success === false) colorClass = 'text-red-500';
 
   return (
-    <div className={`my-5 ${CLASS_NAMES}`} role="alert">
+    <div className={`my-5 ${colorClass}`} role="alert">
       {message}
     </div>
   );

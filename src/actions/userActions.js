@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import common from "../lib/common";
 import { decode } from "jwt-js-decode";
+import { delay } from "../lib/utils";
 
 /**
  * Method for dispatching an action when authenticating a user
@@ -21,6 +22,7 @@ import { decode } from "jwt-js-decode";
  */
 export const loginUserAction = (email, password) => async (dispatch) => {
   try {
+    await delay(true, 2000); // simulating a delay for demo purposes
     const response = await axios.post(`/user/login`, {
       email,
       password
@@ -52,6 +54,7 @@ export const logUserOutAction = () => (dispatch) => {
 export const registerUserAction =
   (name, email, password) => async (dispatch) => {
     try {
+      await delay(true, 2000); // simulating a delay for demo purposes
       const response = await axios.post(`/user/add`, {
         name,
         email,

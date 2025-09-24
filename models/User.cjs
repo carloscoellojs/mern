@@ -68,5 +68,11 @@ UserSchema.methods.verifyPassword = function (pw, cb) {
   });
 };
 
+// static method to validate password strength
+UserSchema.statics.isValidPassword = function(password) {
+  const regex = /^(?=.*[A-Z])(?=.*\d).{6,}$/;
+  return regex.test(password);
+};
+
 // exporting our model
 module.exports = mongoose.model("User", UserSchema);

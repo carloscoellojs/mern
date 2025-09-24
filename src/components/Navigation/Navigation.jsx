@@ -1,54 +1,64 @@
-import { NavLink, Link, Outlet } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logUserOutAction } from "../../actions/userActions";
 import { selectAll } from "../../lib/selectors";
 
-// component for our main navigation
+
+const NAV_LINKS = {
+  authenticated: [
+    { label: "Dashboard", to: "/dashboard" },
+    { label: "Blog", to: "/blog" },
+    { label: "Logout", to: "/", isLogout: true }
+  ],
+  unauthenticated: [
+    { label: "Login", to: "/login" },
+    { label: "Register", to: "/register" }
+  ]
+};
+
 const Navigation = () => {
   const { isUserAuthenticated } = useSelector(selectAll);
   const dispatch = useDispatch();
 
-  const AUTHENTICATED_NAV_LINKS = [
-    ["Dashboard", { to: "/dashboard" }],
-    ["Blog", { to: "/blog" }],
-    ["Logout", { onClick: () => dispatch(logUserOutAction()), to: "/" }]
-  ];
+  const links = isUserAuthenticated ? NAV_LINKS.authenticated : NAV_LINKS.unauthenticated;
 
-  const UN_AUTHENTICATED_NAV_LINKS = [
-    ["Login", { to: "/login" }],
-    ["Register", { to: "/register" }]
-  ];
-
-  const createNavLinks = (linkMapping) =>
-    linkMapping.map((link) => (
-      <div key={link[0]}>
-        <NavLink
-          className={'mx-4 hover:text-indigo-500'}
-          {...link[1]}
-        >
-          {link[0]}
-        </NavLink>
-      </div>
-    ));
-
+  const handleNavClick = (link) => {
+    if (link.isLogout) {
+      dispatch(logUserOutAction());
+    }
+  };
 
   return (
-    <div className="main-container">
-      <div className="wrapper-container">
-        <nav className="nav-container">
-          {
-         !isUserAuthenticated ? <NavLink className="nav-link" to="/">
-            Home
-          </NavLink>
-          : <div></div>}
-          <div className="flex flex-row">
-            {createNavLinks(isUserAuthenticated ? AUTHENTICATED_NAV_LINKS : UN_AUTHENTICATED_NAV_LINKS)}
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-white">
+      <div className="max-w-5xl mx-auto px-4">
+        <nav className="flex items-center justify-between py-6 border-b border-indigo-100 mb-8">
+          <div className="flex items-center space-x-6">
+            {!isUserAuthenticated && (
+              <NavLink className="text-2xl text-charcoal hover:text-charcoal-light transition-colors" to="/">
+                Home
+              </NavLink>
+            )}
+          </div>
+          <div className="flex items-center space-x-4">
+            {links.map((link) => (
+              <NavLink
+                key={link.label}
+                className={({ isActive }) =>
+                  `px-4 py-2 rounded-md font-medium transition-colors duration-200 ` +
+                  (isActive
+                    ? "bg-wheat shadow"
+                    : "hover:bg-wheat hover:text-charcoal-light")
+                }
+                to={link.to}
+                onClick={link.isLogout ? () => handleNavClick(link) : undefined}
+              >
+                {link.label}
+              </NavLink>
+            ))}
           </div>
         </nav>
-        <div className="main-outer-page-container ">
-          <div className="main-inner-page-container">
-            <Outlet />
-          </div>
+        <div className="bg-white rounded-xl shadow-md p-6 min-h-[60vh]">
+          <Outlet />
         </div>
       </div>
     </div>

@@ -2,17 +2,17 @@ import "./App.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Navigation from "./components/Navigation/Navigation";
-import Login from "./components/Login/Login";
-import Register from "./components/Register/Register";
-import Dashboard from "./components/Dashboard/Dashboard";
-import Blog from "./components/Blog/Blog";
+import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Blog from "./pages/Blog/Blog";
 import common from "./lib/common";
 import { store, persistor } from "./reducers/store";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
-import { PageNotFound } from "./components/PageNotFound/PageNotFound";
-import HomePage from "./components/HomePage/HomePage";
+import { PageNotFound } from "./pages/PageNotFound/PageNotFound";
+import HomePage from "./pages/HomePage/HomePage";
 
 if (localStorage.getItem("token")) {
   common.authenticateWithHeaders(localStorage.getItem("token"));
